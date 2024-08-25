@@ -1,0 +1,25 @@
+The user_data block in Terraform is used to pass a script to the EC2 instance that will run when the instance is first launched. This script can perform various initialization tasks, such as installing software, configuring settings, or generating files. Here’s a breakdown of what the specific user_data script in your example does:
+
+Breakdown of the user_data Script
+hcl
+Copy code
+user_data = <<-EOF
+  #!/bin/bash
+  echo "Hello, World!" > /var/www/html/index.html
+EOF
+user_data:
+
+This attribute is part of the aws_instance resource and is used to pass the script as a string. When the EC2 instance is launched, the script provided in user_data is executed by the instance’s operating system.
+<<-EOF ... EOF:
+
+This is a heredoc (here document) syntax, which allows you to define a multi-line string. Everything between <<-EOF and EOF is treated as a single string.
+The - after << is used to strip leading tabs from the heredoc content, which can be useful for keeping your Terraform code neatly indented.
+#!/bin/bash:
+
+This is the "shebang" line, indicating that the script should be interpreted by the Bash shell.
+It ensures that the commands that follow are executed in the context of a Bash shell.
+echo "Hello, World!" > /var/www/html/index.html:
+
+The echo command is used to output the string "Hello, World!".
+The > symbol redirects this output to a file. In this case, the output is written to /var/www/html/index.html.
+This command creates a simple HTML file with the content "Hello, World!" in the default web server directory (/var/www/html) on an EC2 instance, assuming a web server like Apache or Nginx is set up to serve files from this directory.
