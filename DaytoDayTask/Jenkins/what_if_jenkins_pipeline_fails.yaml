@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        stage('First Stage') {
+            steps {
+                script {
+                    // Simulate a failure
+                    sh 'exit 1'
+                }
+            }
+            post {
+                failure {
+                    echo 'First stage failed, but we will continue to the next stage.'
+                }
+            }
+        }
+        stage('Second Stage') {
+            steps {
+                echo 'This is the second stage, which will run even if the first stage fails.'
+            }
+        }
+    }
+}

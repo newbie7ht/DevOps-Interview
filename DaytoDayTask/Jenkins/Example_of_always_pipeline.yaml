@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    stages {
+        stage('First Stage') {
+            steps {
+                script {
+                    // This command will fail
+                    catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        sh 'exit 1'
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo 'First stage failed.'
+                }
+                always {
+                    echo 'This will always run after the First Stage.'
+                }
+            }
+        }
+        stage('Second Stage') {
+            steps {
+                echo 'This is the second stage.'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'This will always run at the end of the pipeline.'
+        }
+    }
+}
