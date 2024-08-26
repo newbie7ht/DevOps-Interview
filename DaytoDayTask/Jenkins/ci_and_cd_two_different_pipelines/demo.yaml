@@ -1,0 +1,34 @@
+###################ci pipeline
+pipeline {
+    agent any
+    stages {
+        stage('Build and Test') {
+            steps {
+                // Your CI build and test steps here
+                echo 'Running CI job...'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'CI job succeeded, triggering CD pipeline...'
+            build job: 'CD_Pipeline', wait: false
+        }
+        failure {
+            echo 'CI job failed, not triggering CD pipeline.'
+        }
+    }
+}
+
+################cd pipeline
+pipeline {
+    agent any
+    stages {
+        stage('Deploy') {
+            steps {
+                // Your deployment steps here
+                echo 'Running CD job...'
+            }
+        }
+    }
+}
